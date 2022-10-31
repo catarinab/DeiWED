@@ -20,6 +20,24 @@ export default class RemoteServices {
       });
   }
 
+  static async addAttendee(Promise: AttendeeDto) {
+
+    return httpClient
+      .post('/attendees', {
+        id: 1,
+        name: Promise.name,
+        istId: Promise.istId,
+        type: Promise.type
+      })
+      .then((response) => response.data)
+      .catch(async (error) => {
+        throw new DeiwedError(
+          await this.errorMessage(error),
+          error.response.data.code
+        );
+      });
+  }
+
   static async errorMessage(error: any): Promise<string> {
     if (error.message === 'Network Error') {
       return 'Unable to connect to server';

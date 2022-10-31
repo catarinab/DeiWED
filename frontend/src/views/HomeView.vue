@@ -1,5 +1,5 @@
 <template>
-  <p>TODO: Home page for {{ appName }}</p>
+  <p>TODO: Bem vindo ao {{ appName }}!</p>
 </template>
 
 <script lang="ts">

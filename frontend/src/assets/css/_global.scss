@@ -35,4 +35,25 @@ body {
 .fixed-column-size-table table {
   table-layout: fixed;
 }
+
+input {
+  margin: 4px;
+  text-align: center;
+}
+
+span {
+  font-size: 18px;
+  margin: 4px;
+  font-weight: 500;
+}
+
+.submit {
+  font-size: 15px;
+  color: #fff;
+  background: rgb(161, 206, 219);
+  padding: 6px 12px;
+  border: none;
+  margin-top: 8px;
+}
+
 /*! purgecss end ignore */
