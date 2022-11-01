@@ -30,6 +30,21 @@
           </v-chip>
           <v-chip v-else color="green" text-color="white"> Bolseiro </v-chip>
         </template>
+        <template v-slot:[`item.delete`]="{ item }">
+          <v-chip
+          close 
+          close-icon="mdi-delete" 
+          @click="onButtonClick(item)"
+          >
+        </v-chip>
+        </template>
+        <template v-slot:[`item.update`]="{ item }">
+          <v-chip
+          close 
+          close-icon="mdi-update"
+          >
+        </v-chip>
+        </template>
       </v-data-table>
     </v-card-text>
   </v-card>
@@ -49,6 +64,8 @@ export default class AttendeesView extends Vue {
     { text: 'Nome', value: 'name', sortable: true, filterable: true },
     { text: 'IST ID', value: 'istId', sortable: true, filterable: true },
     { text: 'Tipo', value: 'type', sortable: true, filterable: false },
+    { text: 'Apagar Participante', value: 'delete', sortable: false, filterable: false },
+    { text: 'Editar Participante', value: 'update', sortable: false, filterable: false },
     // TODO: maybe add another column with possible actions? (edit / delete)
   ];
   search = '';
@@ -63,6 +80,18 @@ export default class AttendeesView extends Vue {
       this.$store.dispatch('error', error);
     }
     await this.$store.dispatch('clearLoading');
+  }
+
+  async onButtonClick(attendeeToDelete: AttendeeDto){
+    await this.$store.dispatch('loading');
+    try {
+      await RemoteServices.deleteAttendee(attendeeToDelete.id);
+      this.attendees = await RemoteServices.getAttendees();
+    } catch (error) {
+      this.$store.dispatch('error', error);
+    }
+    await this.$store.dispatch('clearLoading');
+    this.$emit('refresh');
   }
 }
 </script>

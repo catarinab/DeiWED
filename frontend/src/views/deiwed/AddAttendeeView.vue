@@ -47,6 +47,7 @@
       <p><b>Name:</b> Pelo menos Primeiro e Último Nome, ate 50 caracteres.</p>
       <p><b>Type:</b> Selecione Bolseiro ou Professor.</p>
     </div>
+    
     <div v-if="formSubmitted && !invalidFields">
       <h3>Attendee Adicionado!</h3>
       <p>istId: {{ istId }}</p>
@@ -76,12 +77,14 @@
 
     async submitForm() {
         this.formSubmitted = true;
-        var nameSplit = this.name.split(" ")
         await this.$store.dispatch('loading');
-        if(this.istId.length > 9 || this.name.length > 50 || nameSplit.length < 2 ||
-        (this.type != "GRANTEE" && this.type != "TEACHER")){
+
+        if(this.istId.length > 9 || 
+           this.name.length > 50 || this.name.split(" ").length < 2 ||
+          (this.type != "GRANTEE" && this.type != "TEACHER")){
           this.invalidFields = true;
         }
+        
         else{
           this.attendee = {id: -1, istId: this.istId, name: this.name, type: this.type}
           try {
