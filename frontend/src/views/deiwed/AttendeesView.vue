@@ -34,19 +34,32 @@
           <v-chip
           close 
           close-icon="mdi-delete" 
-          @click="onButtonClick(item)"
+          @click="deleteAttendee(item)"
           >
+          Delete
         </v-chip>
         </template>
         <template v-slot:[`item.update`]="{ item }">
           <v-chip
-          close 
-          close-icon="mdi-update"
+          icon="mdi-update"
+          v-on:click="attendeeUpdate = item ;showModal();"
           >
+          Edit
         </v-chip>
         </template>
       </v-data-table>
     </v-card-text>
+    <Modal
+      v-show="isModalVisible"
+      @close="updateAttendee"
+    >
+
+    <template v-slot:header>
+      Editar Participante: <br>
+    </template>
+
+    </Modal>
+
   </v-card>
 </template>
 
@@ -54,11 +67,15 @@
 import AttendeeDto from '@/models/deiwed/AttendeeDto';
 import RemoteServices from '@/services/RemoteServices';
 import { Component, Vue } from 'vue-property-decorator';
+import Modal from '@/components/Modal.vue';
 import { DataTableHeader } from 'vuetify';
-
-@Component
+      
+@Component({
+  components: { Modal },
+})
 export default class AttendeesView extends Vue {
   attendees: AttendeeDto[] = [];
+  attendeeUpdate: AttendeeDto = {id: -1, istId: "", name: "", type: ""};
   headers: DataTableHeader[] = [
     { text: 'ID', value: 'id', sortable: true, filterable: true },
     { text: 'Nome', value: 'name', sortable: true, filterable: true },
@@ -66,10 +83,10 @@ export default class AttendeesView extends Vue {
     { text: 'Tipo', value: 'type', sortable: true, filterable: false },
     { text: 'Apagar Participante', value: 'delete', sortable: false, filterable: false },
     { text: 'Editar Participante', value: 'update', sortable: false, filterable: false },
-    // TODO: maybe add another column with possible actions? (edit / delete)
   ];
   search = '';
   loading = true;
+  isModalVisible = false;
 
   async mounted() {
     await this.$store.dispatch('loading');
@@ -82,10 +99,44 @@ export default class AttendeesView extends Vue {
     await this.$store.dispatch('clearLoading');
   }
 
-  async onButtonClick(attendeeToDelete: AttendeeDto){
+  async deleteAttendee(attendee: AttendeeDto){
     await this.$store.dispatch('loading');
     try {
-      await RemoteServices.deleteAttendee(attendeeToDelete.id);
+      await RemoteServices.deleteAttendee(attendee.id);
+      this.attendees = await RemoteServices.getAttendees();
+    } catch (error) {
+      this.$store.dispatch('error', error);
+    }
+    await this.$store.dispatch('clearLoading');
+    this.$emit('refresh');
+  }
+
+   
+
+  showModal() {
+    this.isModalVisible = true;
+    this.$emit('open');
+  }
+
+  updateValues(attendee: any) {
+    if(attendee.istId.length <= 9 && attendee.istId.length >= 2){
+      this.attendeeUpdate.istId = attendee.istId;
+    }
+    if(attendee.name.length < 50 && String(attendee.name).split(" ").length >= 2) {
+      this.attendeeUpdate.name = attendee.name;
+    }
+    if(attendee.type == "GRANTEE" || attendee.type == "TEACHER") {
+      this.attendeeUpdate.type = attendee.type;
+    }
+  }
+
+  async updateAttendee(attendee: any) {
+    this.isModalVisible = false;
+    
+    this.updateValues(attendee);
+    await this.$store.dispatch('loading');
+    try {
+      await RemoteServices.updateAttendee(this.attendeeUpdate);
       this.attendees = await RemoteServices.getAttendees();
     } catch (error) {
       this.$store.dispatch('error', error);

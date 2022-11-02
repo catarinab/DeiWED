@@ -79,7 +79,7 @@
         this.formSubmitted = true;
         await this.$store.dispatch('loading');
 
-        if(this.istId.length > 9 || 
+        if(this.istId.length > 9 || this.istId.length <= 2 ||
            this.name.length > 50 || this.name.split(" ").length < 2 ||
           (this.type != "GRANTEE" && this.type != "TEACHER")){
           this.invalidFields = true;
@@ -97,6 +97,3 @@
       }
   }
   </script>
-
-
-  
