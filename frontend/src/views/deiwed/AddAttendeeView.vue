@@ -8,6 +8,7 @@
       <input style=" border: 2px solid beige"
         v-model="istId"
         type="text" 
+        required
       />
       <br>
 
@@ -16,24 +17,34 @@
       <input style=" border: 2px solid beige"
         v-model="name" 
         type="text"
+        required
       />
       <br>
 
       <!-- TODO: Por radio Button Required?-->
 
       <span>Tipo de Participante:</span><br>
-      <input 
-        type="radio" 
-        v-model="type" 
-        value="GRANTEE"
-      />
-      <label>Bolseiro</label>
-      <input 
-        type="radio" 
-        v-model="type" 
-        value="TEACHER"
-      />
-      <label>Professor</label><br>
+      <label>
+        <input 
+          type="radio" 
+          v-model="type" 
+          value="GRANTEE"
+          name="typeChoice"
+          required
+        />
+        Bolseiro
+      </label>
+      <label>
+        <input 
+          type="radio" 
+          v-model="type" 
+          value="TEACHER"
+          name="typeChoice"
+        />
+        Professor
+      </label>
+    
+    <br>
 
       <input 
         class="submit"
