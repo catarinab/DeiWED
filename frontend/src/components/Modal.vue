@@ -1,11 +1,7 @@
 <template>
+  <!-- Modal could have been made with slots, and reused on other views-->
     <div class="modal-backdrop">
       <div class="modal">
-        <header class="modal-header">
-          <slot name="header">
-            This is the default title!
-          </slot>
-        </header>
 
     <form id="editForm">
       <span>istID do Participante:</span><br>
@@ -93,14 +89,6 @@ export default {
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-  }
-
-  .modal-header {
-    padding: 15px;
-    display: flex;
-    position: relative;
-    border-bottom: 1px solid #eeeeee;
-    justify-content: space-between;
   }
 
   .btn-blue {

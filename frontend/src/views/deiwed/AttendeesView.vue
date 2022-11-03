@@ -52,13 +52,7 @@
     <Modal
       v-show="isModalVisible"
       @close="updateAttendee"
-    >
-
-    <template v-slot:header>
-      Editar Participante: <br>
-    </template>
-
-    </Modal>
+    ></Modal>
 
   </v-card>
 </template>
