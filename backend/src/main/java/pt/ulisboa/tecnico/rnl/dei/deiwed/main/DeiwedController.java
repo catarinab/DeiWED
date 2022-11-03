@@ -51,7 +51,11 @@ public class DeiwedController {
 
 	@GetMapping("/sessions")
 	public List<SessionDto> getSessions() {
-		System.out.println("ola");
 		return sessionService.getAllSessions();
+	}
+
+	@GetMapping("/sessions/{id}")
+	public SessionDto getSession(@PathVariable long id) {
+		return sessionService.getSession(id);
 	}
 }

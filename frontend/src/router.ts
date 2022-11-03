@@ -32,6 +32,11 @@ const router = new Router({
       name: 'sessions',
       component: () => import('@/views/deiwed/SessionsView.vue'),
     },
+    {
+      path: '/getSession',
+      name: 'getSession',
+      component: () => import('@/views/deiwed/GetSessionView.vue'),
+    },
   ],
 });
 

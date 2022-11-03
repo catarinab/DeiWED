@@ -184,6 +184,11 @@ export default class TopBar extends Vue {
             path: '/sessions',
             icon: 'fas fa-users',
           },
+          {
+            name: 'Get Session',
+            path: '/getSession',
+            icon: 'fas fa-users',
+          },
         ],
       },
     ];
