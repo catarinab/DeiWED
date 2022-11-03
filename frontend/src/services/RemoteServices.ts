@@ -21,7 +21,6 @@ export default class RemoteServices {
   }
 
   static async addAttendee(Promise: AttendeeDto) {
-
     return httpClient
       .post('/attendees', {
         id: 1,
@@ -39,7 +38,6 @@ export default class RemoteServices {
   }
 
   static async deleteAttendee(studentId: number) {
-
     return httpClient
     .delete(`/attendees/${studentId}`)
     .then((response) => response.data)
@@ -52,7 +50,6 @@ export default class RemoteServices {
   }
 
   static async updateAttendee(Promise: AttendeeDto) {
-
     return httpClient
       .put(`/attendees/${Promise.id}`, {
         id: 1,
@@ -60,6 +57,18 @@ export default class RemoteServices {
         istId: Promise.istId,
         type: Promise.type
       })
+      .then((response) => response.data)
+      .catch(async (error) => {
+        throw new DeiwedError(
+          await this.errorMessage(error),
+          error.response.data.code
+        );
+      });
+  }
+
+  static async getDishes(): Promise<[]> {
+    return httpClient
+      .get('https://eindhoven.rnl.tecnico.ulisboa.pt/food-store/api/v1/dishes')
       .then((response) => response.data)
       .catch(async (error) => {
         throw new DeiwedError(
